@@ -48,7 +48,7 @@ export default function Home() {
       color: 'from-red-500 to-orange-600'
     },
     {
-      id: 'kacang-panjang',
+      id: 'kacangpanjang',
       name: 'Kacang Panjang',
       scientificName: 'Vigna unguiculata',
       image: '/images/kacang-panjang.png',
