@@ -1,11 +1,30 @@
-// app/kambing/page.tsx
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRef, useState } from 'react';
 
 export default function KambingPage() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const playSound = () => {
+    // Visual feedback only (no audio file error)
+    setIsPlaying(true);
+    setTimeout(() => setIsPlaying(false), 2000);
+    
+    // Uncomment when audio file ready:
+    // if (audioRef.current) {
+    //   audioRef.current.play().catch(console.error);
+    // }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       
+      {/* Hidden Audio Element (disabled for now to avoid error) */}
+      {/* <audio ref={audioRef} src="/sounds/kambing.mp3" preload="auto" /> */}
+
       {/* Sticky Navigation */}
       <nav className="bg-white shadow-sm sticky top-0 z-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -24,15 +43,38 @@ export default function KambingPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         
         {/* Hero Section dengan Gambar Besar */}
-        <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
-          {/* Header */}
+        <div className="bg-white rounded-3xl shadow-xl overflow-hidden mb-8 animate-fadeIn">
+          {/* Header dengan Sound Button - UPDATED */}
           <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 sm:px-8 py-6 text-white">
             <div className="flex items-center justify-between">
-              <div>
+              <div className="animate-slideIn">
                 <h1 className="text-4xl sm:text-5xl font-bold mb-2">KAMBING</h1>
                 <p className="text-lg sm:text-xl italic opacity-90">Capra aegagrus hircus</p>
               </div>
-              <div className="text-6xl sm:text-7xl">🐐</div>
+              
+              {/* Emoji dan Sound Button - Side by Side - NEW LAYOUT */}
+              <div className="flex items-center gap-3">
+                {/* Sound Button - di sebelah kiri */}
+                <button
+                  onClick={playSound}
+                  className={`bg-white text-amber-600 rounded-full p-3 shadow-lg hover:scale-110 transition-all duration-300 flex-shrink-0 ${isPlaying ? 'animate-pulse ring-4 ring-white/40' : ''}`}
+                  title="🔊 Dengar suara kambing"
+                  aria-label="Play goat sound"
+                >
+                  {isPlaying ? (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M18 3a1 1 0 00-1.196-.98l-10 2A1 1 0 006 5v9.114A4.369 4.369 0 005 14c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V7.82l8-1.6v5.894A4.37 4.37 0 0015 12c-1.657 0-3 .895-3 2s1.343 2 3 2 3-.895 3-2V3z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.984 5.984 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.415z" clipRule="evenodd" />
+                    </svg>
+                  )}
+                </button>
+                
+                {/* Animated Goat Emoji - di sebelah kanan */}
+                <div className="text-6xl sm:text-7xl animate-float">🐐</div>
+              </div>
             </div>
           </div>
 
@@ -42,7 +84,7 @@ export default function KambingPage() {
               src="/images/kambing.png"
               alt="Kambing - Capra aegagrus hircus"
               fill
-              className="object-contain p-4"
+              className="object-contain p-4 animate-slideUp"
               priority
             />
           </div>
@@ -50,22 +92,22 @@ export default function KambingPage() {
 
         {/* Stats Cards - 4 Kolom Responsive */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow animate-fadeIn" style={{animationDelay: '0.1s'}}>
             <div className="text-4xl mb-3">🥛</div>
             <div className="text-2xl sm:text-3xl font-bold text-blue-600">1-3 L</div>
             <div className="text-sm text-gray-600 mt-1">Susu/Hari</div>
           </div>
-          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow animate-fadeIn" style={{animationDelay: '0.2s'}}>
             <div className="text-4xl mb-3">🌡️</div>
             <div className="text-2xl sm:text-3xl font-bold text-green-600">15-30°C</div>
             <div className="text-sm text-gray-600 mt-1">Suhu Ideal</div>
           </div>
-          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow animate-fadeIn" style={{animationDelay: '0.3s'}}>
             <div className="text-4xl mb-3">⏱️</div>
             <div className="text-2xl sm:text-3xl font-bold text-purple-600">5 Bulan</div>
             <div className="text-sm text-gray-600 mt-1">Masa Bunting</div>
           </div>
-          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow">
+          <div className="bg-white rounded-2xl shadow-md p-6 text-center hover:shadow-lg transition-shadow animate-fadeIn" style={{animationDelay: '0.4s'}}>
             <div className="text-4xl mb-3">💪</div>
             <div className="text-2xl sm:text-3xl font-bold text-amber-600">30-90 kg</div>
             <div className="text-sm text-gray-600 mt-1">Berat Dewasa</div>
@@ -79,7 +121,7 @@ export default function KambingPage() {
           <div className="lg:col-span-1 space-y-6">
             
             {/* Klasifikasi Ilmiah */}
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-fadeIn" style={{animationDelay: '0.5s'}}>
               <div className="bg-gradient-to-r from-indigo-500 to-purple-500 px-5 py-4">
                 <h2 className="text-xl font-bold text-white flex items-center">
                   <span className="mr-2">🔬</span>
@@ -115,7 +157,7 @@ export default function KambingPage() {
             </div>
 
             {/* Habitat */}
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-fadeIn" style={{animationDelay: '0.6s'}}>
               <div className="bg-gradient-to-r from-green-500 to-emerald-500 px-5 py-4">
                 <h2 className="text-xl font-bold text-white flex items-center">
                   <span className="mr-2">🏡</span>
@@ -149,7 +191,7 @@ export default function KambingPage() {
             </div>
 
             {/* Manfaat */}
-            <div className="bg-white rounded-2xl shadow-md overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-fadeIn" style={{animationDelay: '0.7s'}}>
               <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-4">
                 <h2 className="text-xl font-bold text-white flex items-center">
                   <span className="mr-2">🎁</span>
@@ -157,19 +199,19 @@ export default function KambingPage() {
                 </h2>
               </div>
               <div className="p-5 space-y-3">
-                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200 hover:shadow-md transition-shadow">
                   <div className="font-bold text-sm text-gray-800 mb-1">🍖 Daging</div>
                   <div className="text-xs text-gray-600">Sumber protein rendah lemak</div>
                 </div>
-                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200 hover:shadow-md transition-shadow">
                   <div className="font-bold text-sm text-gray-800 mb-1">🥛 Susu</div>
                   <div className="text-xs text-gray-600">Kaya nutrisi, mudah dicerna</div>
                 </div>
-                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200 hover:shadow-md transition-shadow">
                   <div className="font-bold text-sm text-gray-800 mb-1">🧥 Kulit</div>
                   <div className="text-xs text-gray-600">Bahan tas, sepatu, jaket</div>
                 </div>
-                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200">
+                <div className="bg-orange-50 rounded-lg p-3 border border-orange-200 hover:shadow-md transition-shadow">
                   <div className="font-bold text-sm text-gray-800 mb-1">💩 Kotoran</div>
                   <div className="text-xs text-gray-600">Pupuk organik berkualitas</div>
                 </div>
@@ -182,7 +224,7 @@ export default function KambingPage() {
           <div className="lg:col-span-2 space-y-6">
             
             {/* Tentang Kambing */}
-            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 animate-fadeIn" style={{animationDelay: '0.8s'}}>
               <div className="flex items-center mb-5 pb-4 border-b-2 border-amber-400">
                 <span className="text-3xl mr-3">📖</span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Tentang Kambing</h2>
@@ -201,14 +243,14 @@ export default function KambingPage() {
             </div>
 
             {/* Karakteristik */}
-            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 animate-fadeIn" style={{animationDelay: '0.9s'}}>
               <div className="flex items-center mb-5 pb-4 border-b-2 border-blue-400">
                 <span className="text-3xl mr-3">🔍</span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Karakteristik</h2>
               </div>
               
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200">
+                <div className="bg-blue-50 rounded-xl p-4 border border-blue-200 hover:border-blue-400 transition-colors">
                   <div className="flex items-center mb-3">
                     <span className="text-2xl mr-2">👁️</span>
                     <h3 className="font-bold text-gray-800">Ciri Fisik</h3>
@@ -233,7 +275,7 @@ export default function KambingPage() {
                   </ul>
                 </div>
 
-                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200">
+                <div className="bg-purple-50 rounded-xl p-4 border border-purple-200 hover:border-purple-400 transition-colors">
                   <div className="flex items-center mb-3">
                     <span className="text-2xl mr-2">🧠</span>
                     <h3 className="font-bold text-gray-800">Perilaku</h3>
@@ -261,14 +303,14 @@ export default function KambingPage() {
             </div>
 
             {/* Pakan */}
-            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 animate-fadeIn" style={{animationDelay: '1s'}}>
               <div className="flex items-center mb-5 pb-4 border-b-2 border-green-400">
                 <span className="text-3xl mr-3">🌾</span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Pakan & Nutrisi</h2>
               </div>
               
               <div className="grid sm:grid-cols-3 gap-4">
-                <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300 text-center">
+                <div className="bg-green-50 rounded-xl p-4 border-2 border-green-300 text-center hover:shadow-lg transition-shadow">
                   <div className="text-3xl mb-2">🌿</div>
                   <h4 className="font-bold text-gray-800 mb-2">Hijauan</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
@@ -278,7 +320,7 @@ export default function KambingPage() {
                   </ul>
                 </div>
 
-                <div className="bg-yellow-50 rounded-xl p-4 border-2 border-yellow-300 text-center">
+                <div className="bg-yellow-50 rounded-xl p-4 border-2 border-yellow-300 text-center hover:shadow-lg transition-shadow">
                   <div className="text-3xl mb-2">🌽</div>
                   <h4 className="font-bold text-gray-800 mb-2">Konsentrat</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
@@ -288,7 +330,7 @@ export default function KambingPage() {
                   </ul>
                 </div>
 
-                <div className="bg-blue-50 rounded-xl p-4 border-2 border-blue-300 text-center">
+                <div className="bg-blue-50 rounded-xl p-4 border-2 border-blue-300 text-center hover:shadow-lg transition-shadow">
                   <div className="text-3xl mb-2">🧂</div>
                   <h4 className="font-bold text-gray-800 mb-2">Mineral</h4>
                   <ul className="text-sm text-gray-700 space-y-1">
@@ -307,14 +349,14 @@ export default function KambingPage() {
             </div>
 
             {/* Reproduksi */}
-            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 animate-fadeIn" style={{animationDelay: '1.1s'}}>
               <div className="flex items-center mb-5 pb-4 border-b-2 border-pink-400">
                 <span className="text-3xl mr-3">👶</span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Reproduksi</h2>
               </div>
               
               <div className="grid sm:grid-cols-2 gap-6">
-                <div className="bg-pink-50 rounded-xl p-5 border-2 border-pink-200">
+                <div className="bg-pink-50 rounded-xl p-5 border-2 border-pink-200 hover:shadow-lg transition-shadow">
                   <h4 className="font-bold text-gray-800 mb-3 text-lg flex items-center">
                     <span className="text-2xl mr-2">📅</span>
                     Siklus Reproduksi
@@ -339,7 +381,7 @@ export default function KambingPage() {
                   </ul>
                 </div>
 
-                <div className="bg-purple-50 rounded-xl p-5 border-2 border-purple-200">
+                <div className="bg-purple-50 rounded-xl p-5 border-2 border-purple-200 hover:shadow-lg transition-shadow">
                   <h4 className="font-bold text-gray-800 mb-3 text-lg flex items-center">
                     <span className="text-2xl mr-2">🍼</span>
                     Perawatan Anak
@@ -367,14 +409,14 @@ export default function KambingPage() {
             </div>
 
             {/* Fakta Seru */}
-            <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg p-6 sm:p-8 text-white">
+            <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-2xl shadow-lg p-6 sm:p-8 text-white animate-fadeIn" style={{animationDelay: '1.2s'}}>
               <div className="text-center mb-6">
                 <h2 className="text-2xl sm:text-3xl font-bold mb-2">✨ FAKTA SERU ✨</h2>
                 <p className="text-white/90">Tahukah kamu tentang kambing?</p>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30 hover:bg-white/30 transition-all">
                   <div className="text-4xl mb-3 text-center">🎯</div>
                   <h3 className="font-bold text-lg mb-2 text-center">Pemanjat Ulung!</h3>
                   <p className="text-sm text-white/90 text-center">
@@ -382,7 +424,7 @@ export default function KambingPage() {
                   </p>
                 </div>
 
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30 hover:bg-white/30 transition-all">
                   <div className="text-4xl mb-3 text-center">👁️</div>
                   <h3 className="font-bold text-lg mb-2 text-center">Mata 360°</h3>
                   <p className="text-sm text-white/90 text-center">
@@ -390,7 +432,7 @@ export default function KambingPage() {
                   </p>
                 </div>
 
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30 hover:bg-white/30 transition-all">
                   <div className="text-4xl mb-3 text-center">🍽️</div>
                   <h3 className="font-bold text-lg mb-2 text-center">Pemakan Selektif</h3>
                   <p className="text-sm text-white/90 text-center">
@@ -398,7 +440,7 @@ export default function KambingPage() {
                   </p>
                 </div>
 
-                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30">
+                <div className="bg-white/20 backdrop-blur-sm rounded-xl p-5 border border-white/30 hover:bg-white/30 transition-all">
                   <div className="text-4xl mb-3 text-center">🧠</div>
                   <h3 className="font-bold text-lg mb-2 text-center">Hewan Cerdas</h3>
                   <p className="text-sm text-white/90 text-center">
@@ -409,14 +451,14 @@ export default function KambingPage() {
             </div>
 
             {/* Tips Perawatan */}
-            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8">
+            <div className="bg-white rounded-2xl shadow-md p-6 sm:p-8 animate-fadeIn" style={{animationDelay: '1.3s'}}>
               <div className="flex items-center mb-5 pb-4 border-b-2 border-green-400">
                 <span className="text-3xl mr-3">💚</span>
                 <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">Tips Perawatan</h2>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-4">
-                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
                   <div className="bg-green-500 rounded-full p-2 mr-3 flex-shrink-0">
                     <span className="text-xl">🧹</span>
                   </div>
@@ -426,7 +468,7 @@ export default function KambingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
                   <div className="bg-green-500 rounded-full p-2 mr-3 flex-shrink-0">
                     <span className="text-xl">🌿</span>
                   </div>
@@ -436,7 +478,7 @@ export default function KambingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
                   <div className="bg-green-500 rounded-full p-2 mr-3 flex-shrink-0">
                     <span className="text-xl">💧</span>
                   </div>
@@ -446,7 +488,7 @@ export default function KambingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
                   <div className="bg-green-500 rounded-full p-2 mr-3 flex-shrink-0">
                     <span className="text-xl">💉</span>
                   </div>
@@ -456,7 +498,7 @@ export default function KambingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
                   <div className="bg-green-500 rounded-full p-2 mr-3 flex-shrink-0">
                     <span className="text-xl">✂️</span>
                   </div>
@@ -466,7 +508,7 @@ export default function KambingPage() {
                   </div>
                 </div>
 
-                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start p-4 bg-green-50 rounded-xl border border-green-200 hover:shadow-lg transition-shadow">
                   <div className="bg-green-500 rounded-full p-2 mr-3 flex-shrink-0">
                     <span className="text-xl">🌡️</span>
                   </div>
